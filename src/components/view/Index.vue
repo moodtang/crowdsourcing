@@ -2,45 +2,45 @@
   <div class="index">
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="默认" name="zero">
-        <el-row>
-          <!--<el-carousel >-->
-            <!--<el-carousel-item v-for="item in Img" :key="item">-->
-              <!--<img  v-lazy= "item"/>-->
-                <!--{{item}}-->
-            <!--</el-carousel-item>-->
-          <!--</el-carousel>-->
-          <div class="block">
-            <div style="height: 500px">
-              <img v-lazy="Img[currentPage]" :key="Img[currentPage]" style=" height: 480px;max-width: 100%;">
-            </div>
-            <el-row class="row_select" type="flex" justify="center">
-              <el-col class="block" :xs="10" :sm="8" :md="8" :lg="6" :xl="6">
-                <el-cascader
-                  expand-trigger="hover"
-                  :options="options"
-                  v-model="selectedOptions"
-                  @change="handleChange">
-                </el-cascader>
-              </el-col>
-              <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
-                <el-button type="primary" plain >确认提交</el-button>
-              </el-col>
-            </el-row>
-            <el-pagination
-              @current-change="handleCurrentChange"
-              :current-page.sync="currentPage"
-              layout="prev, pager, next, jumper"
-              :total="1000">
-            </el-pagination>
-          </div>
 
-        </el-row>
 
       </el-tab-pane>
       <el-tab-pane label="动物" name="first">动物</el-tab-pane>
       <el-tab-pane label="植物" name="second">植物</el-tab-pane>
       <el-tab-pane label="其它" name="third">其它</el-tab-pane>
+      <el-row>
+        <!--<el-carousel >-->
+        <!--<el-carousel-item v-for="item in Img" :key="item">-->
+        <!--<img  v-lazy= "item"/>-->
+        <!--{{item}}-->
+        <!--</el-carousel-item>-->
+        <!--</el-carousel>-->
+        <div class="block">
+          <div style="height: 500px">
+            <img v-lazy="Img[currentPage]" :key="Img[currentPage]" style=" height: 480px;max-width: 100%;">
+          </div>
+          <el-row class="row_select" type="flex" justify="center">
+            <el-col class="block" :xs="10" :sm="8" :md="8" :lg="6" :xl="6">
+              <el-cascader
+                expand-trigger="hover"
+                :options="options"
+                v-model="selectedOptions"
+                @change="handleChange">
+              </el-cascader>
+            </el-col>
+            <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
+              <el-button type="primary" plain >确认提交</el-button>
+            </el-col>
+          </el-row>
+          <el-pagination
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            layout="prev, pager, next, jumper"
+            :total="1000">
+          </el-pagination>
+        </div>
 
+      </el-row>
     </el-tabs>
 
   </div>

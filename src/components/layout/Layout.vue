@@ -1,9 +1,9 @@
 <template>
   <div class="layout">
     <el-container style="height: 100%">
-      <el-header class="el-head">
-        <span>
-                网站首页
+      <el-header class="el-head" >
+        <span style="font-family: PingFang SC;font-size: larger;margin-top: 10px"  >
+            基于并行计算技术的众包标注系统web端的设计与实现
             </span>
         <span style="float:right">
                 <el-dropdown trigger="click">
@@ -21,8 +21,8 @@
         <el-aside width="200px">
           <el-menu default-active="0" class="el-menu-vertical-demo" style="min-height:800px" @select="handleSelect">
             <el-menu-item index="0"><i class="el-icon-star-on"></i>推荐</el-menu-item>
-            <el-menu-item index="1"><i class="el-icon-picture"></i>动物</el-menu-item>
-            <el-menu-item index="2"><i class="el-icon-picture-outline"></i>植物</el-menu-item>
+            <el-menu-item index="1"><i class="el-icon-picture"></i>图片上传</el-menu-item>
+            <el-menu-item index="2"><i class="el-icon-picture-outline"></i>数据管理</el-menu-item>
             <el-menu-item index="3"><i class="el-icon-menu"></i>其它</el-menu-item>
           </el-menu>
         </el-aside>
@@ -50,10 +50,10 @@
               this.$router.push('/');
               break;
             case '1':
-              this.$router.push('/hello');
+              this.$router.push('/managerImg');
               break;
             case '2':
-              this.$router.push('/hello')
+              this.$router.push('/managerData')
               break;
             case '3':
               this.$router.push('/hello')
