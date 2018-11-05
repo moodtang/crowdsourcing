@@ -28,6 +28,9 @@
                 @change="handleChange">
               </el-cascader>
             </el-col>
+            <el-col :xs="8" :sm="6" :md="4" :lg="4" :xl="3">
+              <el-input v-model="input" placeholder="自定义：分类-类别-名称"></el-input>
+            </el-col>
             <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
               <el-button type="primary" plain >确认提交</el-button>
             </el-col>
@@ -257,6 +260,7 @@
             }],
             selectedOptions: [],
             currentPage: 1,
+            input: ''
           };
 
       },

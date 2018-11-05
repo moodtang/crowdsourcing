@@ -24,6 +24,7 @@
             <el-menu-item index="1"><i class="el-icon-picture"></i>图片上传</el-menu-item>
             <el-menu-item index="2"><i class="el-icon-picture-outline"></i>数据管理</el-menu-item>
             <el-menu-item index="3"><i class="el-icon-menu"></i>其它</el-menu-item>
+            <el-menu-item index="4"><i class="el-icon-menu"></i>登录</el-menu-item>
           </el-menu>
         </el-aside>
         <el-main>
@@ -56,7 +57,10 @@
               this.$router.push('/managerData')
               break;
             case '3':
-              this.$router.push('/hello')
+              this.$router.push('/register')
+              break;
+            case '4':
+              this.$router.push('/login')
               break;
           }
         },

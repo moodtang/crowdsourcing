@@ -32,6 +32,18 @@ export const constantRouterMap = [
     name: 'ManagerData',
     meta: {title: '图片管理', icon: 'managerData', noCache: true}
   },
+  {
+    path: '/register',
+    component: () => import('@/components/view/Register'),
+    name: 'Register',
+    meta: {title: '注册', icon: 'register', noCache: true}
+  },
+  {
+    path: '/login',
+    component: () => import('@/components/view/Login'),
+    name: 'Login',
+    meta: {title: 'Login', icon: 'Login', noCache: true}
+  },
 ]
 export const asyncRouterMap = [
 
