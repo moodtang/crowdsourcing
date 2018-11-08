@@ -42,7 +42,7 @@
                                    clearable>
                           <template slot="prepend">确认密码</template>
                         </el-input>
-                        <el-button v-on:click="" type="primary" class="mtop"
+                        <el-button v-on:click="registerUser" type="primary" class="mtop"
                                    style="width: 80% ;margin-top: 10px">注册
                         </el-button>
                       </el-form-item>
@@ -64,6 +64,8 @@
 </template>
 
 <script>
+    import store from "../../store/store";
+    import * as types from '../../store/types'
     export default {
         name: "register",
       data(){
@@ -73,6 +75,13 @@
             upassword: 'tang',
             cpassword: 'tang'
             },
+          }
+      },
+      methods:{
+          registerUser() {
+            store.commit(types.LOGOUT)//测试退出登录
+            store.commit(types.TITLE)
+            this.$router.push('/home')
           }
       }
     }

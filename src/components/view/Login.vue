@@ -24,11 +24,13 @@
                     </el-form-item>
 
                     <el-form-item >
-                      <el-button v-on:click="" type="primary"
+                      <el-button v-on:click="loginUser" type="primary"
                                  style="width: 80% ;margin-top: 10px">登录
                       </el-button>
                     </el-form-item>
                   </el-form>
+                  <router-link :to="'/register'" style="color: #66b1ff">注册
+                  </router-link>
                 </el-col>
               </el-row>
             </div>
@@ -38,8 +40,25 @@
 </template>
 
 <script>
+    import store from "../../store/store";
+    import * as types from '../../store/types'
     export default {
-        name: "login"
+        name: "login",
+        data(){
+          return{
+            token:''
+          }
+        },
+         methods:{
+          loginUser(){
+            store.commit(types.LOGIN,'tang');//测试token
+            console.log(store.getters.getToken)
+            this.$router.push('/home')
+          }  ,
+          linkRegister(){
+             this.$router.push('/register')
+           }
+      }
     }
 </script>
 

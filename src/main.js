@@ -2,14 +2,17 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
-import 'babel-polyfill'
+import router, {constantRouterMap} from './router'
+import 'babel-polyfill' //浏览器兼容
 import  ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import VueLazyload from'vue-lazyload'
+import VueLazyload from'vue-lazyload' //懒加载
+import axios from 'axios' //网络请求
+import store from './store/store'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.prototype.axios=axios
 
 Vue.use(VueLazyload,{
   preload:5.3,//预加载的宽高
@@ -21,7 +24,24 @@ Vue.use(VueLazyload,{
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
+  router,axios,router,store,
   components: { App },
   template: '<App/>'
+})
+//路由判断
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(r => r.meta.requireAuth)) {
+    if (store.state.token) {
+      next();
+    }
+    else {
+      next({
+        path: '/login',
+        query: {redirect: to.fullPath}
+      })
+    }
+  }
+  else {
+    next();
+  }
 })

@@ -43,12 +43,15 @@
           searchCriteria: '',
         };
       },
+      mounted:function(){
+        this.$router.push('/index');
+      },
       methods: {
         handleSelect(key, keyPath) {
           console.log(key, keyPath);
           switch(key){
             case '0':
-              this.$router.push('/');
+              this.$router.push('/index');
               break;
             case '1':
               this.$router.push('/managerImg');
@@ -57,7 +60,7 @@
               this.$router.push('/managerData')
               break;
             case '3':
-              this.$router.push('/register')
+              this.$router.push('/hello')
               break;
             case '4':
               this.$router.push('/login')

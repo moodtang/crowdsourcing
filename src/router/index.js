@@ -1,37 +1,47 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import Layout from '@/components/layout/Layout'
 
 Vue.use(Router)
 
 export const constantRouterMap = [
-
   {
     path: '/',
-    component: () => import('@/components/view/Index'),
+    component: () => import('@/components/view/Login'),
+    name: 'LoginPage',
+    meta: {title: 'LoginPage', icon: 'Login', noCache: true}
   },
   {
-    path: '/hello',
-    component: HelloWorld,
-  //  redirect: 'dashboard',
-     // path: 'dashboard',
-      component: () => import('@/components/HelloWorld'),
-      name: 'HelloWorld',
-      meta: {title: 'hello', icon: 'index', noCache: true}
+    path: '/home',
+    component: () => import('@/components/layout/Layout'),
+    meta:{requireAuth:true},
+    children:[
+      {
+        path: '/index',
+        component: () => import('@/components/view/Index'),
+        meta:{requireAuth:true}
+      },
+      {
+        path: '/hello',
+        //  redirect: 'dashboard',
+        // path: 'dashboard',
+        component: () => import('@/components/HelloWorld'),
+        name: 'HelloWorld',
+        meta: {title: 'hello', icon: 'index', noCache: true,requireAuth:true}
+      },
+      {
+        path: '/managerImg',
+        component: () => import('@/components/view/ManagerImg'),
+        name: 'ManagerImg',
+        meta: {title: '图片管理', icon: 'managerImg', noCache: true,requireAuth:true}
+      },{
+        path: '/managerData',
+        component: () => import('@/components/view/ManagerData'),
+        name: 'ManagerData',
+        meta: {title: '图片管理', icon: 'managerData', noCache: true,requireAuth:true}
+      },
+    ]
   },
-  {
-    path: '/managerImg',
-    component: () => import('@/components/view/ManagerImg'),
-    name: 'ManagerImg',
-    meta: {title: '图片管理', icon: 'managerImg', noCache: true}
-  },
-  {
-    path: '/managerData',
-    component: () => import('@/components/view/ManagerData'),
-    name: 'ManagerData',
-    meta: {title: '图片管理', icon: 'managerData', noCache: true}
-  },
+
   {
     path: '/register',
     component: () => import('@/components/view/Register'),
@@ -48,6 +58,7 @@ export const constantRouterMap = [
 export const asyncRouterMap = [
 
 ]
+
 export default new Router({
   // routes: [
   //   {
