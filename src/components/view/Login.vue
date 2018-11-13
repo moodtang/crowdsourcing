@@ -53,6 +53,7 @@
           loginUser(){
             store.commit(types.LOGIN,'tang');//测试token
             console.log(store.getters.getToken)
+
             this.$router.push('/home')
           }  ,
           linkRegister(){
