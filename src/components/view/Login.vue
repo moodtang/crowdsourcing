@@ -46,15 +46,22 @@
         name: "login",
         data(){
           return{
-            token:''
+            token:'',
           }
         },
          methods:{
           loginUser(){
             store.commit(types.LOGIN,'tang');//测试token
-            console.log(store.getters.getToken)
+            console.log(store.getters.getToken);
+            this.axios.post('http://127.0.0.1:8090/login',{
+              'username':"1111",
+              'password':"22222",
+              'flag':'c',
+            }).then(response=>{
+              console.log(response.data)
+            })
+           // this.$router.push('/home')
 
-            this.$router.push('/home')
           }  ,
           linkRegister(){
              this.$router.push('/register')
