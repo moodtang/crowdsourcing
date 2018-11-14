@@ -42,6 +42,18 @@
                                    clearable>
                           <template slot="prepend">确认密码</template>
                         </el-input>
+                      </el-form-item>
+                      <el-form-item label="用户身份" >
+                        <el-row type="flex" justify="left">
+                          <el-col style="margin-left: 25px" >
+                            <el-select v-model="registerForm.identity" placeholder="请选择用户身份" >
+                              <el-option label="普通用户" value="c"></el-option>
+                              <el-option label="专家" value="s"></el-option>
+                            </el-select>
+                          </el-col>
+                        </el-row>
+                      </el-form-item>
+                      <el-form-item>
                         <el-button v-on:click="registerUser" type="primary" class="mtop"
                                    style="width: 80% ;margin-top: 10px">注册
                         </el-button>
@@ -73,7 +85,8 @@
             registerForm: {
             username: 'tang',
             upassword: 'tang',
-            cpassword: 'tang'
+            cpassword: 'tang',
+              identity:'c'
             },
           }
       },
@@ -81,6 +94,14 @@
           registerUser() {
             store.commit(types.LOGOUT)//测试退出登录
             store.commit(types.TITLE)
+            // this.axios.post({
+            //   url:'http://127.0.0.1:8090/register',
+            //   params:{
+            //     username:this.registerForm.username,
+            //     password:this.registerForm.cpassword,
+            //     flag:this.registerForm.identity
+            //   }
+            // })
             this.$router.push('/home')
           }
       }

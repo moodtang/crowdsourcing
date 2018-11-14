@@ -56,9 +56,9 @@
           return{
             activeName: 'zero',
             Img:[
-              require("../../assets/1.jpg"),
-              require("../../assets/1.jpg"),
-              require("../../assets/2.jpg"),
+              require("../../assets/logo.png"),
+              require("../../assets/3.png"),
+              require("../../assets/4.png"),
               require("../../assets/1.png"),
               require("../../assets/2.png"),
              // require("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541157532624&di=94ae3512874789aa72978e607ada2eed&imgtype=0&src=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Freg3T0Fqiaxickl77Nj5DPHicEzCFBOGsduRwC8Qz5pQGnibGUkMPD2NzDlX0icAXSDDj5JwL7z7DkQUmRriaBLVkDhA%2F640%3Fwx_fmt%3Djpeg"),
