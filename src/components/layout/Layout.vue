@@ -8,11 +8,11 @@
         <span style="float:right">
                 <el-dropdown trigger="click">
                   <span class="el-dropdown-link" style="color:white">
-                    admin<i class="el-icon-caret-bottom el-icon--right"></i>
+                    用户<i class="el-icon-caret-bottom el-icon--right"></i>
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>个人信息</el-dropdown-item>
-                    <el-dropdown-item>退出登录</el-dropdown-item>
+                    <el-dropdown-item @click.native="logout">注销用户</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
         </span>
@@ -24,6 +24,7 @@
             <el-menu-item index="1"><i class="el-icon-picture"></i>图片上传</el-menu-item>
             <el-menu-item index="2"><i class="el-icon-picture-outline"></i>数据管理</el-menu-item>
             <el-menu-item index="3"><i class="el-icon-menu"></i>其它</el-menu-item>
+            <el-menu-item index="5"><i class="el-icon-menu"></i>任务列表</el-menu-item>
             <el-menu-item index="4"><i class="el-icon-menu"></i>登录</el-menu-item>
           </el-menu>
         </el-aside>
@@ -36,6 +37,8 @@
 </template>
 
 <script>
+  import store from "../../store/store";
+  import * as types from '../../store/types'
     export default {
         name: "layout",
       data() {
@@ -65,8 +68,17 @@
             case '4':
               this.$router.push('/login')
               break;
+            case '5':
+              this.$router.push('/taskList')
+              break;
           }
         },
+        logout:function () {
+          console.log("logout")
+          store.commit(types.LOGOUT)//退出登录
+          this.$router.push('/home')
+         // store.commit(types.TITLE)
+        }
       }
 
     }

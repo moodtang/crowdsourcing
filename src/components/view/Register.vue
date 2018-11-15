@@ -76,8 +76,7 @@
 </template>
 
 <script>
-    import store from "../../store/store";
-    import * as types from '../../store/types'
+
     export default {
         name: "register",
       data(){
@@ -92,17 +91,25 @@
       },
       methods:{
           registerUser() {
-            store.commit(types.LOGOUT)//测试退出登录
-            store.commit(types.TITLE)
-            // this.axios.post({
-            //   url:'http://127.0.0.1:8090/register',
-            //   params:{
-            //     username:this.registerForm.username,
-            //     password:this.registerForm.cpassword,
-            //     flag:this.registerForm.identity
-            //   }
-            // })
-            this.$router.push('/home')
+            this.axios.post('http://127.0.0.1:8090/register',{
+                username:this.registerForm.username,
+                password:this.registerForm.cpassword,
+                flag:this.registerForm.identity
+              }).then(response=>{
+              var message=response.data.msg;
+              if(message == "register_success"){
+                this.$message({
+                  message: '注册成功',
+                  type: 'success'
+                });
+                  this.$router.push('/home')
+              }
+
+              else
+                this.$message.error(message);
+              //console.log(response.data.msg)
+            })
+           // this.$router.push('/home')
           }
       }
     }

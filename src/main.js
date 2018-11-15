@@ -8,10 +8,12 @@ import  ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueLazyload from'vue-lazyload' //懒加载
 import axios from 'axios' //网络请求
+import qs from 'qs'
 import store from './store/store'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.use(qs)
 Vue.prototype.axios=axios
 
 Vue.use(VueLazyload,{

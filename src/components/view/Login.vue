@@ -65,21 +65,30 @@
         },
          methods:{
           loginUser(){
-            store.commit(types.LOGIN,'tang');//测试token
+            //测试，不连接服务器
+            store.commit(types.LOGIN,'tang');
+            this.$router.push('/home')
             //console.log(store.getters.getToken);
-            this.axios.post('http://127.0.0.1:8090/login',{
-              'username':this.loginForm.username,
-              'password':this.loginForm.password,
-              'flag':this.identity,
-            }).then(response=>{
-              var message=response.data.msg;
-              if(message == "success")
-                this.$router.push('/home')
-              else
-                this.$message.error(message);
-              //console.log(response.data.msg)
-            })
-           // this.$router.push('/home')
+            //网络连接
+            // this.axios.post('http://127.0.0.1:8090/login',{
+            //   'username':this.loginForm.username,
+            //   'password':this.loginForm.password,
+            //   'flag':this.identity,
+            // }).then(response=>{
+            //   var message=response.data.msg;
+            //   if(message == "login_success"){
+            //     store.commit(types.LOGIN,'tang');//身份位token
+            //     //console.log(store.getters.getToken)
+            //     store.commit(types.USERNAME,this.loginForm.username)
+            //     store.commit(types.FLAG,this.identity)
+            //     this.$router.push('/home')
+            //   }
+            //
+            //   else
+            //     this.$message.error(message);
+            //   //console.log(response.data.msg)
+            // })
+
 
           }  ,
           linkRegister(){

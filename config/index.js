@@ -10,7 +10,17 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      //跨域问题前端配置
+      // '/images': {
+      //   target: 'https://120.79.78.24:8088/',
+      //   changeOrigin: true,
+      //  // secure: false,
+      //   pathRewrite: {
+      //     '^/images': ''
+      //   }
+      // }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

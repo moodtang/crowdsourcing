@@ -7,7 +7,9 @@ export default new Vuex.Store({
   state: {
     user: {},
     token: null,
-    title: ''
+    title: '',
+    username:'',
+    userFlag:''
   },
   mutations: {
     [types.LOGIN]: (state, data) => {
@@ -20,11 +22,20 @@ export default new Vuex.Store({
     },
     [types.TITLE]: (state, data) => {
       state.title = data;
+    },
+    [types.USERNAME]:(state,date)=>{
+      state.username=date;
+    },
+    [types.FLAG]:(state,date)=>{
+      state.userFlag=date;
     }
   },
   getters:{
     getToken:state=>{
       return state.token;
+    },
+    getUsername:state=>{
+      return state.username
     }
   }
 })

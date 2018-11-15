@@ -2,7 +2,7 @@
     <div class="managerImg">
       <el-upload
         class="upload-demo"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action="/images/"
         accept="image/jpeg,image/gif,image/png"
         :on-preview="handlePreview"
         :on-remove="handleRemove"

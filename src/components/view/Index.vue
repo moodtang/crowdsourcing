@@ -1,13 +1,13 @@
 <template>
   <div class="index">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="默认" name="zero">
+    <!--<el-tabs v-model="activeName" @tab-click="handleClick">-->
+      <!--<el-tab-pane label="默认" name="zero">-->
 
 
-      </el-tab-pane>
-      <el-tab-pane label="动物" name="first">动物</el-tab-pane>
-      <el-tab-pane label="植物" name="second">植物</el-tab-pane>
-      <el-tab-pane label="其它" name="third">其它</el-tab-pane>
+      <!--</el-tab-pane>-->
+      <!--<el-tab-pane label="动物" name="first">动物</el-tab-pane>-->
+      <!--<el-tab-pane label="植物" name="second">植物</el-tab-pane>-->
+      <!--<el-tab-pane label="其它" name="third">其它</el-tab-pane>-->
       <el-row>
         <!--<el-carousel >-->
         <!--<el-carousel-item v-for="item in Img" :key="item">-->
@@ -16,9 +16,11 @@
         <!--</el-carousel-item>-->
         <!--</el-carousel>-->
         <div class="block">
-          <div style="height: 500px">
-            <img v-lazy="Img[currentPage]" :key="Img[currentPage]" style=" height: 480px;max-width: 100%;">
-          </div>
+          <!--<div style="height: 500px">-->
+            <!--<img v-lazy="Img[currentPage]" :key="Img[currentPage]" style=" height: 480px;max-width: 100%;" @click.right="onclickImg" oncontextmenu="return false">-->
+          <!--</div>-->
+          <img v-lazy="ImgSrc" :key="ImgSrc" style=" height: 480px;max-width: 100%;" @click.right="onclickImg" oncontextmenu="return false">
+          <!--<img src='/images/3.png'>-->
           <el-row class="row_select" type="flex" justify="center">
             <el-col class="block" :xs="10" :sm="8" :md="8" :lg="6" :xl="6">
               <el-cascader
@@ -32,36 +34,41 @@
               <el-input v-model="input" placeholder="自定义：分类-类别-名称"></el-input>
             </el-col>
             <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
-              <el-button type="primary" plain >确认提交</el-button>
+              <el-button type="primary" plain v-on:click="commitPictureInfo">确认提交</el-button>
             </el-col>
           </el-row>
-          <el-pagination
-            @current-change="handleCurrentChange"
-            :current-page.sync="currentPage"
-            layout="prev, pager, next, jumper"
-            :total="1000">
-          </el-pagination>
+          <!--分页-->
+          <!--<el-pagination-->
+            <!--@current-change="handleCurrentChange"-->
+            <!--:current-page.sync="currentPage"-->
+            <!--layout="prev, pager, next, jumper"-->
+            <!--:total="1000">-->
+          <!--</el-pagination>-->
         </div>
 
       </el-row>
-    </el-tabs>
+    <!--</el-tabs>-->
 
   </div>
 </template>
 
 <script>
+  import store from "../../store/store";
     export default {
         name: "index",
         data(){
           return{
             activeName: 'zero',
+            ImgSrc:'http://120.79.78.24:8088/3.png',
             Img:[
               require("../../assets/logo.png"),
               require("../../assets/3.png"),
               require("../../assets/4.png"),
               require("../../assets/1.png"),
               require("../../assets/2.png"),
-             // require("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541157532624&di=94ae3512874789aa72978e607ada2eed&imgtype=0&src=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Freg3T0Fqiaxickl77Nj5DPHicEzCFBOGsduRwC8Qz5pQGnibGUkMPD2NzDlX0icAXSDDj5JwL7z7DkQUmRriaBLVkDhA%2F640%3Fwx_fmt%3Djpeg"),
+              'http://120.79.78.24:8088/3.png',
+              'http://120.79.78.24:8088/11.png',
+              'http://120.79.78.24:8088/12.png',
             ],
             options: [{
               value: 'zhinan',
@@ -276,6 +283,22 @@
         handleCurrentChange(val) {
           this.currentPage=val;
           console.log(`当前页: ${val}`+this.Img[this.currentPage]);
+        },
+        commitPictureInfo(){
+          let markName=store.getters.getUsername;
+          console.log(markName);
+          this.axios.post('http://127.0.0.1:8090/picture/markPicture',{
+            username:"tang",
+            flag:"c",
+            pictureSrc:"string",
+            pictureInfo:"string",
+            // username:markName
+          }).then(response=>{
+            console.log(response.data)
+          })
+        },
+        onclickImg(){
+          this.$message('不允许操作图片');
         }
       }
     }

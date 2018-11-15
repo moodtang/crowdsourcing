@@ -29,6 +29,12 @@ export const constantRouterMap = [
         meta: {title: 'hello', icon: 'index', noCache: true,requireAuth:true}
       },
       {
+        path: '/taskList',
+        component: () => import('@/components/view/TaskList'),
+        name: 'TaskList',
+        meta: {title: '任务列表', icon: 'taskList', noCache: true,requireAuth:true}
+      },
+      {
         path: '/managerImg',
         component: () => import('@/components/view/ManagerImg'),
         name: 'ManagerImg',
