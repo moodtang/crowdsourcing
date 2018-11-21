@@ -45,6 +45,12 @@ export const constantRouterMap = [
         name: 'ManagerData',
         meta: {title: '图片管理', icon: 'managerData', noCache: true,requireAuth:true}
       },
+      {
+        path: '/markPicture',
+        component: () => import('@/components/view/MarkPicture'),
+        name: 'MarkPicture',
+        meta: {title: '图片标记', icon: 'markPicture', noCache: true,requireAuth:true}
+      },
     ]
   },
 

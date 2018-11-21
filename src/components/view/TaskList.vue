@@ -5,9 +5,9 @@
         <span>任务名称</span>
         <el-button style="float: right; padding: 3px 0" type="text" @click="refreshList"><i class="el-icon-refresh"></i></el-button>
       </div>
-      <div v-for="item in 4" :key="item" class="text item">
+      <div v-for="item in taskList" :key="item.id" class="text item">
         <router-link :to="'/index'" class="router-link-active">
-          {{'列表内容 ' + item }}
+          {{item.taskDescribe }}
         </router-link>
       </div>
     </el-card>
@@ -17,10 +17,26 @@
 <script>
     export default {
         name: "task-list",
+      mounted(){
+        this.getList()
+      },
+      data(){
+          return{
+            taskList:null
+          }
+      },
       methods:{
           refreshList(){
+            this.getList();
             this.$message("刷新列表");
-          }
+          },
+        getList(){
+          this.axios.get('http://127.0.0.1:8090/task/list').then(response=>{
+            this.taskList=response.data.taskList
+            console.log(this.taskList);
+
+          })
+        }
       }
     }
 </script>
