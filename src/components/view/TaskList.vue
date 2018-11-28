@@ -12,11 +12,17 @@
       </div>
       <el-collapse :data="taskList" accordion >
         <div v-for="(item,index) in taskList">
-          <el-collapse-item :title="item.taskDescribe" :name="index">
-            <el-row>这里是任务的描述信息 ；</el-row>
-            <el-row>{{item.id}}</el-row>
+          <el-collapse-item :title="item.missionName" :name="index">
+            <el-row>任务id：{{item.id}}</el-row>
+            <el-row>任务描述：{{item.taskDescribe}}</el-row>
+            <el-row>任务等级：{{item.level}}</el-row>
+            <el-row>发布者：{{item.publisher}}</el-row>
+            <el-row>创建时间：{{item.createDate}}</el-row>
+            <el-row>结束时间：{{item.endTime}}</el-row>
+            <el-row>任务所需人数：{{item.peopleNum}}</el-row>
+            <el-row>任务图片数量：{{item.picNum}}</el-row>
             <el-row>
-              <el-button  plain @click="acceptTask(index)" type="text">
+              <el-button  plain @click="getNum(index)" type="text">
                 接取任务
               </el-button>
             </el-row>
@@ -33,7 +39,7 @@
       <el-input-number v-model="num" :min="taskSum/10" :max="taskSum" label="描述文字"></el-input-number>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    <el-button type="primary" @click="acceptMission">确 定</el-button>
   </span>
     </el-dialog>
   </div>
@@ -41,7 +47,7 @@
 
 <script>
     import ElRow from "element-ui/packages/row/src/row";
-
+    import store from "../../store/store";
     export default {
       components: {ElRow},
       name: "task-list",
@@ -53,7 +59,9 @@
             taskList:null,
             dialogVisible: false,
             num:0,
-            taskSum:100
+            taskSum:100,
+            missionId:0,
+            missionName:null
           }
       },
       methods:{
@@ -68,9 +76,31 @@
 
           })
         },
-        acceptTask(index){
+        getNum(index){
             console.log(this.taskList[index])
+            this.taskSum = parseInt( this.taskList[index].picNum);
+            this.missionId=this.taskList[index].id;
+            this.missionName = this.taskList[index].missionName;
             this.dialogVisible = true
+
+        },
+        acceptMission(){
+          let markUserName = store.getters.getUsername;
+          let markUserFlag = store.getters.getUserFlag;
+          this.axios.post('http://127.0.0.1:8090/task/acceptTask', {
+            username: markUserName,
+            flag: markUserFlag,
+            needNum:this.num,
+            missionName:this.missionName,
+            missionId:this.missionId
+            // username:markName
+          }).then(response => {
+            this.$message({
+              message:response.data,
+            });
+          })
+         // console.log(markUserName+markUserFlag+this.num+this.missionId+this.missionName)
+          this.dialogVisible=false;
         },
         handleClose(done) {
           this.$confirm('确认关闭？')

@@ -56,7 +56,7 @@
         data(){
           return{
             loginForm:{
-              username:'tang',
+              username:'tang1',
               password:'tang'
             },
             identity:'c',

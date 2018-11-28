@@ -47,8 +47,8 @@
                         <el-row type="flex" justify="left">
                           <el-col style="margin-left: 25px" >
                             <el-select v-model="registerForm.identity" placeholder="请选择用户身份" >
-                              <el-option label="普通用户" value="c"></el-option>
-                              <el-option label="专家" value="s"></el-option>
+                              <el-option label="普通用户" value="1"></el-option>
+                              <el-option label="专家" value="2"></el-option>
                             </el-select>
                           </el-col>
                         </el-row>
@@ -82,10 +82,10 @@
       data(){
           return{
             registerForm: {
-            username: 'tang',
+            username: 'tang1',
             upassword: 'tang',
             cpassword: 'tang',
-              identity:'c'
+              identity:1
             },
           }
       },
@@ -94,7 +94,7 @@
             this.axios.post('http://127.0.0.1:8090/register',{
                 username:this.registerForm.username,
                 password:this.registerForm.cpassword,
-                flag:this.registerForm.identity
+                grade:this.registerForm.identity
               }).then(response=>{
               var message=response.data.msg;
               if(message == "register_success"){

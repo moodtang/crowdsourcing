@@ -65,7 +65,6 @@
 
 <script>
   import ElRow from "element-ui/packages/row/src/row";
-
   export default {
     components: {ElRow},
     name: "HelloWorld",
@@ -87,7 +86,6 @@
         listJson:[],
         dialogVisible: false,
         level:null,
-        texts:["没把握","yiabn","u","f","k"],
         options: [{
           value: '生态系统',
           label: '生态系统',
@@ -294,13 +292,15 @@
       }
     },
     beforeMount(){
+      this.getUseTime()
       setInterval(this.getTime,1000)
+
     },
     mounted() {
       //标记
       this.backgroundPicture(this.imgSrc);
     },
-    destroyed(){
+    beforeDestroy(){
       this.commitTime()
     },
     methods:{
@@ -467,15 +467,35 @@
         console.log(this.commitData);
         this.commitData=[]
         this.backgroundPicture(this.imgSrc)
-
+      //  提交用时
+        this.commitTime();
+        this.btnDisabled = true;
       },
       //定时
       getTime(){
         this.timeData++;
       },
+      getUseTime(){
+        let url="http://127.0.0.1:8090/task/getTime"+"/tang1"
+        this.axios.get(url,{params: {missionId:78}})
+          .then(response=>{
+            this.timeData=response.data.use_time;
+         // console.log(response.data)
+        })
+      },
       //提交本次用时
-      commitTime(){
+      commitTime() {
+        console.log(this.way)
         console.log("this is beforeDestory")
+        let url = "http://127.0.0.1:8090/task/updateTime" + "/tang1"
+        let data = {"missionId": 78, "useTime": this.timeData}
+        if (this.timeData > 0) {
+          this.axios.put(url, data)
+            .then(response => {
+              console.log(response.data)
+            })
+
+        }
       }
     }
   }
