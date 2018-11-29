@@ -2,6 +2,17 @@
   <div id="helloWorld">
       <el-row type="flex" justify="center">
         <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
+          <el-select  placeholder="请选择" v-model="value" value="" @change="getMarkMission">
+
+            <el-option
+              v-for="(item,index) in missionList"
+              :key="index"
+              :label="item.missionName"
+              :value="index">
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
           <el-button type="primary" icon="el-icon-edit-outline" plain @click="rectangle"></el-button>
         </el-col>
         <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
@@ -12,11 +23,20 @@
           提交
         </el-button>
         </el-col>
+
+        <el-col :xs="12" :sm="8" :md="6" :lg="4" :xl="4">
+          <el-row>
+           <el-progress :percentage="rate" :text-inside="true" :stroke-width="18"></el-progress>
+          </el-row>
+          <el-row>
+            已标记数量：{{this.markNum}}
+          </el-row>
+        </el-col>
         <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
           已用时间：{{this.timeData}}秒
         </el-col>
       </el-row>
-      <el-row style="margin-top: 10px">
+      <el-row style="margin-top: 10px"  v-loading="loading">
         <canvas id="myCanvas" width="1024" height="768" style="border:1px solid #d3d3d3;"  oncontextmenu="return false" @mousedown="getBegin" @mouseup="getEnd" @mousemove="draw">
           您的浏览器不支持 HTML5 canvas 标签。
         </canvas>
@@ -65,6 +85,7 @@
 
 <script>
   import ElRow from "element-ui/packages/row/src/row";
+  import store from "../store/store";
   export default {
     components: {ElRow},
     name: "HelloWorld",
@@ -73,19 +94,28 @@
         imgSrc:"http://120.79.78.24:8088/11.png",
         imgSrc1:"http://120.79.78.24:8088/3.png",
         x:0,
-        y:0,
+        y:0,                                      //左上坐标
         w:0,
-        h:0,
+        h:0,                                    //右下坐标
         img:null,
         ctx:null,
         c:null,
         btnDisabled:true,
         flag:false,
-        num:0,
-        way:1,
+        num:0,                                  //标志位，为0时鼠标被按下
+        way:1,                                //标记方式
         listJson:[],
         dialogVisible: false,
-        level:null,
+        level:null,                         //标记等级
+        missionList:[],                     //所接取的任务列表
+        value:null,                          //任务列表的index
+        selectedOptions: [],
+        inputData: '其它',                          //label的具体内容
+        commitData:[],                              //label，level，标记的坐标合集
+        timeData:0,                                         //所花费的时间
+        rate:0,                                 // 任务进度
+        markNum:0,                            //标记图片数
+        loading:true,
         options: [{
           value: '生态系统',
           label: '生态系统',
@@ -284,24 +314,22 @@
             label: '组件交互文档'
           }]
         }],
-         selectedOptions: [],
-          inputData: '其它',
-          commitData:[],
-          timeData:0
+
 
       }
     },
     beforeMount(){
-      this.getUseTime()
       setInterval(this.getTime,1000)
 
     },
     mounted() {
       //标记
       this.backgroundPicture(this.imgSrc);
+      //获取用户任务列表
+      this.getList()
     },
     beforeDestroy(){
-      this.commitTime()
+      //this.commitTime()
     },
     methods:{
       //初始化画布
@@ -337,7 +365,7 @@
           That.w = e.offsetX;
           That.h = e.offsetY;
           That.ctx.strokeRect(this.x, this.y,this.w - this.x, this.h - this.y)
-          console.log(That.x + " " + That.y + " " + That.w + " " + That.h)
+         // console.log(That.x + " " + That.y + " " + That.w + " " + That.h)
 
         }
         if(this.way == 2){
@@ -351,8 +379,8 @@
         // }
         this.dialogVisible=true
         this.flag=false
-        console.log(That.way)
-        console.log(this.listJson)
+       // console.log(That.way)
+        //console.log(this.listJson)
       },
       //鼠标移动
       draw(e){
@@ -444,9 +472,9 @@
           this.axios.post('http://127.0.0.1:8090/drawImages/addMarkData',{
             'username':"tang",
             'imageSrc':"http://120.79.78.24:8088/11.png",
-            'flag':'c',
+            'grade':1,
             'markRectangleData':this.commitData,
-            'taskId':1000,
+            'taskId':this.value,
 
           }).then(response=>{
 
@@ -456,15 +484,15 @@
           this.axios.post('http://127.0.0.1:8090/drawImages/addMarkData',{
             'username':"tang",
             'imageSrc':"http://120.79.78.24:8088/11.png",
-            'flag':'c',
+            'grade':1,
             'markOutlineData':this.commitData,
-            'taskId':1000,
+            'taskId':this.value,
 
           }).then(response=>{
 
           })
         }
-        console.log(this.commitData);
+       // console.log(this.commitData);
         this.commitData=[]
         this.backgroundPicture(this.imgSrc)
       //  提交用时
@@ -476,8 +504,11 @@
         this.timeData++;
       },
       getUseTime(){
-        let url="http://127.0.0.1:8090/task/getTime"+"/tang1"
-        this.axios.get(url,{params: {missionId:78}})
+        let markUserName = store.getters.getUsername;
+        var tmp="http://127.0.0.1:8090/task/getTime/";
+        var url =tmp.concat(markUserName)
+        //console.log(url);
+        this.axios.get(url,{params: {missionId:this.value}})
           .then(response=>{
             this.timeData=response.data.use_time;
          // console.log(response.data)
@@ -485,17 +516,54 @@
       },
       //提交本次用时
       commitTime() {
-        console.log(this.way)
-        console.log("this is beforeDestory")
-        let url = "http://127.0.0.1:8090/task/updateTime" + "/tang1"
-        let data = {"missionId": 78, "useTime": this.timeData}
+        //标记数量加一
+
+        //console.log(this.way)
+       // console.log("this is beforeDestory")
+        let markUserName = store.getters.getUsername;
+        var tmp="http://127.0.0.1:8090/task/updateTime/";
+        var url =tmp.concat(markUserName)
+        let id = this.missionList[this.value].missionId
+        let data = {"missionId": id, "useTime": this.timeData}
         if (this.timeData > 0) {
           this.axios.put(url, data)
             .then(response => {
-              console.log(response.data)
+             // console.log(response.data)
             })
 
         }
+        this.markNum++
+        this.rate = this.markNum /this.missionList[this.value].needNum * 100;
+        this.rate = Math.floor(this.rate)
+        if(this.rate >100){
+          this.rate = 100
+        }
+        console.log(this.rate)
+      },
+      //获取用户任务列表
+      getList(){
+        let markUserName = store.getters.getUsername;
+        this.axios.get('http://127.0.0.1:8090/task/userList',{params: {"username":markUserName}}).then(response=>{
+
+         // console.log(response.data)
+           this.missionList=response.data.userTaskList
+          if(this.missionList.length != 0){
+           // console.log(this.missionList)
+           // this.value = this.missionList[0].id;
+          }
+
+        })
+      },
+      getMarkMission(){
+        this.loading = false
+       // console.log(this.value)
+        console.log(this.missionList)
+        this.timeData = this.missionList[this.value].useTime
+        this.rate = this.missionList[this.value].markNum /this.missionList[this.value].needNum * 100;
+        this.rate = Math.floor(this.rate)
+        this.markNum = this.missionList[this.value].markNum;
+
+        //this.getUseTime()
       }
     }
   }
