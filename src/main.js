@@ -10,6 +10,7 @@ import VueLazyload from'vue-lazyload' //懒加载
 import axios from 'axios' //网络请求
 import qs from 'qs'
 import store from './store/store'
+import './icons'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
@@ -23,6 +24,8 @@ Vue.use(VueLazyload,{
   attempt:3,//尝试加载的次数
   listenEvents:['scroll','wheel','mousewheel','resize','animationend','transitionend','touchmove'], //vue监听的事件
 })
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -47,3 +50,22 @@ router.beforeEach((to, from, next) => {
     next();
   }
 })
+// axios.interceptors.request.use( (config) => {
+//   // if (sessionStorage.userToken) {
+//   //   config.headers.Authorization = "Bearer "+sessionStorage.userToken;
+//   // }
+//   let token = sessionStorage.getItem('token');
+//   if (token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+//     config.headers.Authorization = "Bearer " + token;
+//   }
+//
+//   if (config.method === "post"){
+//     config.data = qs.stringify(config.data);
+//     // config.headers = {'Content-Type' : 'application/x-www-form-urlencoded'};
+//
+//   }
+//   return config;
+// },  (error) => {
+//   return Promise.reject(error);
+// });
+

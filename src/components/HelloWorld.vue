@@ -1,8 +1,9 @@
 <template>
   <div id="helloWorld">
-      <el-row type="flex" justify="center">
+    <el-card style="background: rgba(81, 227, 161, 0.2);">
+      <el-row type="flex" justify="left">
         <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
-          <el-select  placeholder="请选择" v-model="value" value="" @change="getMarkMission">
+          <el-select  placeholder="请选择任务" v-model="value" value="" @change="getMarkMission">
 
             <el-option
               v-for="(item,index) in missionList"
@@ -13,13 +14,27 @@
           </el-select>
         </el-col>
         <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
-          <el-button type="primary" icon="el-icon-edit-outline" plain @click="rectangle"></el-button>
+          <div class="textStyle">
+            标记方式：
+          </div>
+        </el-col>
+        <el-col :xs="2" :sm="2" :md="1" :lg="1" :xl="1" >
+          <el-button type="text" @click="rectangle">
+            <svg-icon icon-class="rectangle"  />
+          </el-button>
+        </el-col>
+        <!--<el-col :xs="2" :sm="2" :md="2" :lg="1" :xl="1">-->
+          <!--<el-button type="text">-->
+            <!--<svg-icon icon-class="ellipse" />-->
+          <!--</el-button>-->
+        <!--</el-col>-->
+        <el-col :xs="2" :sm="2" :md="1" :lg="1" :xl="1">
+          <el-button type="text" @click="outline">
+            <svg-icon icon-class="brush" />
+          </el-button>
         </el-col>
         <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
-          <el-button type="primary" icon="el-icon-edit" plain @click="outline"></el-button>
-        </el-col>
-        <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
-        <el-button @click="commitMark" :disabled="btnDisabled" type="primary" >
+        <el-button @click="commitMark" :disabled="btnDisabled" type="primary" plain >
           提交
         </el-button>
         </el-col>
@@ -28,19 +43,22 @@
           <el-row>
            <el-progress :percentage="rate" :text-inside="true" :stroke-width="18"></el-progress>
           </el-row>
-          <el-row>
+          <el-row class="textStyle">
             已标记数量：{{this.markNum}}
           </el-row>
         </el-col>
-        <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
+        <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1" class="textStyle" :offset="6">
           已用时间：{{this.timeData}}秒
         </el-col>
       </el-row>
-      <el-row style="margin-top: 10px"  v-loading="loading">
+    </el-card>
+    <el-card v-loading="loading">
+      <el-row style="margin-top: 10px"  >
         <canvas id="myCanvas" width="1024" height="768" style="border:1px solid #d3d3d3;"  oncontextmenu="return false" @mousedown="getBegin" @mouseup="getEnd" @mousemove="draw">
           您的浏览器不支持 HTML5 canvas 标签。
         </canvas>
       </el-row>
+    </el-card>
       <el-dialog
         title="属性"
         :visible.sync="dialogVisible"
@@ -79,19 +97,23 @@
           <el-button type="primary" @click="commitLabel">确 定</el-button>
         </span>
       </el-dialog>
-
   </div>
 </template>
 
 <script>
   import ElRow from "element-ui/packages/row/src/row";
   import store from "../store/store";
+  import qs from "qs"
+  import ElCard from "element-ui/packages/card/src/main";
   export default {
-    components: {ElRow},
+    components: {
+      ElCard,
+      ElRow},
     name: "HelloWorld",
     data(){
       return{
-        imgSrc:"http://120.79.78.24:8088/11.png",
+        imgSrc:"http://120.79.78.24:8088/29.jpg",
+        //imgSrc:"https://dc-1256533863.cos.ap-shanghai.myqcloud.com/dc/任务2/compress1111/1-1306140R333.jpg",
         imgSrc1:"http://120.79.78.24:8088/3.png",
         x:0,
         y:0,                                      //左上坐标
@@ -334,14 +356,14 @@
     methods:{
       //初始化画布
       backgroundPicture(picsrc){
-        // console.log("hi")
+         console.log(picsrc)
         const  That=this
         That.c = document.getElementById("myCanvas");
         That.ctx = That.c.getContext("2d");
         That.ctx.clearRect(0,0,1024,768);
         That.img = new Image();
         That.img.src=picsrc;
-        console.log(picsrc)
+        //console.log(picsrc)
         That.img.onload = function () {
           That.ctx.drawImage(That.img, 0, 0);
         }
@@ -471,10 +493,10 @@
         if(this.way == 1){
           this.axios.post('http://127.0.0.1:8090/drawImages/addMarkData',{
             'username':"tang",
-            'imageSrc':"http://120.79.78.24:8088/11.png",
+            'imageSrc':this.imgSrc,
             'grade':1,
             'markRectangleData':this.commitData,
-            'taskId':this.value,
+            'taskId':this.missionList[this.value].missionId,
 
           }).then(response=>{
 
@@ -483,10 +505,10 @@
         if(this.way == 2){
           this.axios.post('http://127.0.0.1:8090/drawImages/addMarkData',{
             'username':"tang",
-            'imageSrc':"http://120.79.78.24:8088/11.png",
+            'imageSrc':this.imgSrc,
             'grade':1,
             'markOutlineData':this.commitData,
-            'taskId':this.value,
+            'taskId':this.missionList[this.value].missionId,
 
           }).then(response=>{
 
@@ -494,9 +516,13 @@
         }
        // console.log(this.commitData);
         this.commitData=[]
-        this.backgroundPicture(this.imgSrc)
+
+        console.log(this.imgSrc)
       //  提交用时
         this.commitTime();
+        this.markNum++
+        //获取图片地址
+        this.getImagesSrc()
         this.btnDisabled = true;
       },
       //定时
@@ -532,13 +558,12 @@
             })
 
         }
-        this.markNum++
-        this.rate = this.markNum /this.missionList[this.value].needNum * 100;
+        this.rate = (this.markNum+1) /this.missionList[this.value].needNum * 100;
         this.rate = Math.floor(this.rate)
         if(this.rate >100){
           this.rate = 100
         }
-        console.log(this.rate)
+       // console.log(this.rate)
       },
       //获取用户任务列表
       getList(){
@@ -562,13 +587,47 @@
         this.rate = this.missionList[this.value].markNum /this.missionList[this.value].needNum * 100;
         this.rate = Math.floor(this.rate)
         this.markNum = this.missionList[this.value].markNum;
-
+        this.getImagesSrc()
         //this.getUseTime()
-      }
+      },
+      getImagesSrc(){
+        let a = {missionId:this.missionList[this.value].missionId,
+        value:this.markNum}
+          this.axios.post('http://192.168.43.8:8080/sign/getPic',
+            qs.stringify(a),{headers:{
+                'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYyIsImV4cCI6MTU0MzYyNzc5N30.av-dYRwkvtJ5MHw6uG-QgYXTv6ExIrl6LpXxN3CjfckgABSdDKslCUeBOV-DjUIFsRbsvcZ5wnJ9OfAbd34fhw'
+              }
+            },
+            // {
+            //   // 单独配置
+            //   withCredentials: true
+            // }
+            ) .then(res => {
+             // this.imgSrc = res.data.data.compressPic
+            console.log(res.data.data)
+              if(res.data.data === null){
+                this.$message({
+                  message: '标记完成',
+                });
+                this.padding = true
+              }
+              else
+                this.imgSrc = res.data.data.compressPic
+              this.backgroundPicture(this.imgSrc)
+            console.log(this.imgSrc);
+          }).catch(err => {
+            console.log(err)
+          })
+        },
+
     }
   }
 </script>
 
 <style scoped>
-
+.textStyle{
+  color: #4dabff;
+  size: 5px;
+  margin-top: 8px;
+}
 </style>

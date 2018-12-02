@@ -29,7 +29,16 @@
           </el-collapse-item>
         </div>
       </el-collapse>
+      <el-pagination
+        @size-change="sizeChange"
+        @current-change="currentChange"
+        :current-page.sync="currentPage"
+        :page-size="100"
+        layout="prev, pager, next, jumper"
+        :total="1000">
+      </el-pagination>
     </el-card>
+
     <el-dialog
       title="任务量"
       :visible.sync="dialogVisible"
@@ -61,7 +70,9 @@
             num:0,
             taskSum:100,
             missionId:0,
-            missionName:null
+            missionName:null,
+            currentPage:1
+
           }
       },
       methods:{
@@ -108,7 +119,13 @@
               done();
             })
             .catch(_ => {});
-        }
+        },
+        sizeChange(val){
+          console.log(`每页 ${val} 条`);
+        },
+        currentChange(val){
+          console.log(`当前页: ${val}`);
+        },
       }
     }
 </script>
