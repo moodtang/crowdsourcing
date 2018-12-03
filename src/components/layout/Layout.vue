@@ -18,7 +18,8 @@
                               <i class="el-icon-caret-bottom el-icon--right"></i>
                             </span>
                             <el-dropdown-menu slot="dropdown">
-                              <el-dropdown-item>个人信息</el-dropdown-item>
+                              <el-dropdown-item>个人信息
+                              </el-dropdown-item>
                               <el-dropdown-item @click.native="logout">注销用户</el-dropdown-item>
                             </el-dropdown-menu>
                           </el-dropdown>
@@ -31,6 +32,7 @@
         <el-aside class="el-left" width="200px">
           <el-menu default-active="0" class="el-menu-vertical-demo" style="min-height:1000px" @select="handleSelect">
             <el-menu-item index="0"><i class="el-icon-star-on"></i>推荐</el-menu-item>
+            <el-menu-item index="1"> <svg-icon icon-class="userInfo" /> &nbsp;用户信息</el-menu-item>
             <!--<el-menu-item index="1"><i class="el-icon-picture"></i>图片上传</el-menu-item>-->
      <!--       <el-menu-item index="2"><i class="el-icon-picture-outline"></i>数据管理</el-menu-item>-->
             <el-menu-item index="3"><i class="el-icon-menu"></i>标记</el-menu-item>
@@ -67,13 +69,13 @@
       },
       methods: {
         handleSelect(key, keyPath) {
-          console.log(key, keyPath);
+         // console.log(key, keyPath);
           switch(key){
             case '0':
               this.$router.push('/index');
               break;
             case '1':
-              this.$router.push('/managerImg');
+              this.$router.push('/userInfo');
               break;
             case '2':
               this.$router.push('/managerData')

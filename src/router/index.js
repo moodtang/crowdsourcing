@@ -39,6 +39,12 @@ export const constantRouterMap = [
         component: () => import('@/components/view/ManagerImg'),
         name: 'ManagerImg',
         meta: {title: '图片管理', icon: 'managerImg', noCache: true,requireAuth:true}
+      },
+      {
+        path: '/userInfo',
+        component: () => import('@/components/view/UserInfo'),
+        name: 'UserInfo',
+        meta: {title: '用户信息', icon: 'userInfo', noCache: true,requireAuth:true}
       },{
         path: '/managerData',
         component: () => import('@/components/view/ManagerData'),

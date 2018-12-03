@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "echarts": "^4.2.0-rc.2",
     "element-ui": "^2.4.9",
     "qs": "^6.5.2",
     "svg-sprite-loader": "^4.1.3",
+    "unidecode": "^0.1.8",
     "vue": "^2.5.2",
     "vue-lazyload": "^1.2.6",
     "vue-router": "^3.0.1",
